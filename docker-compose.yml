@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db_mongo_mideval:
+    image: mongo:latest
+    container_name: 'weedrop-mongo-container'
+    environment:
+      - MONGO_DB_NAME=midevalDB
+    volumes:
+      - db_data:/data/db
+    restart: always
+
+  midevalapi:
+    depends_on:
+      - db_mongo_mideval
+    build: ./
+    container_name: 'weedrop-api-container'
+    image: weedrop-api-img:factory
+    ports:
+      - "4242:8080"
+
+volumes:
+  db_data: {}
