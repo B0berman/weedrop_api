@@ -22,7 +22,7 @@ class TestController {
     @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     fun getTest(): Response {
-        return ResponseDTO(data = DAOManager.factory.userDAO.first).buildResponse()
+        return ResponseDTO("get test").buildResponse()
     }
 
 }

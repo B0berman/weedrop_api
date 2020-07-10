@@ -33,6 +33,7 @@ class OrderController {
     }
 
     @GET
+    @ApiOperation(value = "Get all orders.", response = ResponseDTO::class)
     fun getOrders() : Response {
         val sender = servletRequest!!.getAttribute("user") as User
         val response = orderService.getOrders(sender)
@@ -41,6 +42,7 @@ class OrderController {
 
     @GET
     @Path("/{id}")
+    @ApiOperation(value = "get an order by id.", response = ResponseDTO::class)
     fun getOrderById(@PathParam("id") id: String): Response {
         val response = orderService.getOrderById(id)
         return response.buildResponse()
@@ -48,6 +50,7 @@ class OrderController {
 
     @POST
     @Path("/{id}/validate")
+    @ApiOperation(value = "Validate an order.", response = ResponseDTO::class)
     fun validateOrder(@PathParam("id") id: String) : Response {
         val response = orderService.validateOrder(id)
         return response.buildResponse()
@@ -55,6 +58,7 @@ class OrderController {
 
     @POST
     @Path("/{id}/decline")
+    @ApiOperation(value = "Decline an order.", response = ResponseDTO::class)
     fun declineOrder(@PathParam("id") id: String) : Response {
         val response = orderService.declineOrder(id)
         return response.buildResponse()

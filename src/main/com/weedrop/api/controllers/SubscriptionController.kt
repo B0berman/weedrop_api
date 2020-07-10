@@ -1,5 +1,6 @@
 package com.weedrop.api.controllers
 
+import com.weedrop.api.annotations.Authenticated
 import com.weedrop.api.beans.dto.ResponseDTO
 import com.weedrop.api.beans.dto.SignupDTO
 import com.weedrop.api.services.AccountService
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/subscriptions")
+@Authenticated
 class SubscriptionController {
 
     private val accountService = AccountService()
@@ -24,10 +26,17 @@ class SubscriptionController {
 
     @POST
     @Path("/subscribe")
-    @ApiOperation(value = "Create a category.", response = ResponseDTO::class)
+    @ApiOperation(value = "Subscribe as seller.", response = ResponseDTO::class)
     fun subscribe() : Response {
         val response = ResponseDTO()
         return response.buildResponse()
     }
 
+    fun validateSubscription(): ResponseDTO {
+        return ResponseDTO()
+    }
+
+    fun declineSubscription(): ResponseDTO {
+        return ResponseDTO()
+    }
 }

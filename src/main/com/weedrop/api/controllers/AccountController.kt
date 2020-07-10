@@ -24,7 +24,7 @@ class AccountController {
 
     @POST
     @Path("/signup")
-    @ApiOperation(value = "Create a category.", response = ResponseDTO::class)
+    @ApiOperation(value = "Signup as user.", response = ResponseDTO::class)
     fun signup(signupDTO: SignupDTO) : Response {
         val response = accountService.signup(signupDTO)
         return response.buildResponse()

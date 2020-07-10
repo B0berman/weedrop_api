@@ -25,19 +25,23 @@ class ProductController {
     private var servletRequest: HttpServletRequest? = null
 
     @POST
-    @ApiOperation(value = "Create a category.", response = ResponseDTO::class)
+    @ApiOperation(value = "Create a product.", response = ResponseDTO::class)
     fun createProduct(productCreationDTO: ProductCreationDTO) : Response {
         val response = productService.create(productCreationDTO)
         return response.buildResponse()
     }
 
-    fun updateProduct() : Response {
+    @PUT
+    @Path("/{id}")
+    @ApiOperation(value = "Update a product.", response = ResponseDTO::class)
+    fun updateProduct(@PathParam("id") id: String) : Response {
         val response = ResponseDTO()
         return response.buildResponse()
     }
 
     @GET
     @Path("/{id}")
+    @ApiOperation(value = "Get a product by id.", response = ResponseDTO::class)
     fun getProductById(@PathParam("id") id: String): Response {
         val response = productService.getById(id)
         return response.buildResponse()
