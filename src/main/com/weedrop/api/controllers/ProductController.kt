@@ -1,5 +1,7 @@
 package com.weedrop.api.controllers
 
+import com.weedrop.api.annotations.Authenticated
+import com.weedrop.api.beans.User
 import com.weedrop.api.beans.dto.ProductCreationDTO
 import com.weedrop.api.beans.dto.ResponseDTO
 import com.weedrop.api.beans.dto.SignupDTO
@@ -13,7 +15,7 @@ import javax.ws.rs.core.Context
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-@Api(tags = ["Account"])
+@Api(tags = ["Product"])
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/products")
@@ -26,8 +28,17 @@ class ProductController {
 
     @POST
     @ApiOperation(value = "Create a product.", response = ResponseDTO::class)
+    @Authenticated
     fun createProduct(productCreationDTO: ProductCreationDTO) : Response {
-        val response = productService.create(productCreationDTO)
+        val sender = servletRequest!!.getAttribute("user") as User
+        val response = productService.create(productCreationDTO, sender)
+        return response.buildResponse()
+    }
+
+    @GET
+    @ApiOperation(value = "Get a product by id.", response = ResponseDTO::class)
+    fun getAllProduct(): Response {
+        val response = productService.getAll()
         return response.buildResponse()
     }
 

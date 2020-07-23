@@ -29,6 +29,7 @@ class AuthenticationFilter : ContainerRequestFilter {
             annotation = rClass.getAnnotation(Authenticated::class.java) as Authenticated
         else if (method.isAnnotationPresent(Authenticated::class.java))
             annotation = method.getAnnotation(Authenticated::class.java) as Authenticated
+
         if (rClass != null && annotation != null) {
             val rolesAllowed = annotation.level
             if (!requestContext.headers.containsKey("Authorization"))
@@ -46,6 +47,7 @@ class AuthenticationFilter : ContainerRequestFilter {
                     val user: User? = DAOManager.factory.userDAO.filter("email", firebaseToken.email).first
                     if (user == null)
                         requestContext.abortWith(ResponseDTO(error = "Invalid token", status = 401).buildResponse())
+                    println(user)
                     requestContext.setProperty("user", user!!)
                 } catch (e: FirebaseAuthException) {
                     e.printStackTrace()

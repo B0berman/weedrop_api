@@ -27,17 +27,25 @@ class ShopController {
 
     @POST
     @ApiOperation(value = "Create a shop.", response = ResponseDTO::class)
-    fun createProduct(shopCreationDTO: ShopCreationDTO) : Response {
+    fun createShop(shopCreationDTO: ShopCreationDTO) : Response {
         val sender = servletRequest!!.getAttribute("user") as User
         val response = shopService.create(shopCreationDTO, sender)
         return response.buildResponse()
     }
 
     @GET
+    @Path("/all")
     @ApiOperation(value = "Get all shops.", response = ResponseDTO::class)
     fun getShops() : Response {
         val response = shopService.getShops()
         return response.buildResponse()
     }
 
+    @GET
+    @ApiOperation(value = "Get my shop.", response = ResponseDTO::class)
+    fun getUserShop() : Response {
+        val sender = servletRequest!!.getAttribute("user") as User
+        val response = shopService.getUserShop(sender)
+        return response.buildResponse()
+    }
 }
