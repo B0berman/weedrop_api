@@ -15,6 +15,8 @@ class ShopService {
 
     fun create(shopCreationDTO: ShopCreationDTO, sender: User): ResponseDTO {
         val shop = Shop(shopCreationDTO, sender)
+        sender.hasShop = true
+        DAOManager.factory.userDAO.push(sender)
         DAOManager.factory.shopDAO.push(shop)
         return ResponseDTO(data = shop)
     }
@@ -27,5 +29,13 @@ class ShopService {
             product.shop = null
         val result = ShopDTO(shop, products)
         return ResponseDTO(data = result)
+    }
+
+    fun activateShop(id: String) : ResponseDTO {
+        val shop = DAOManager.factory.shopDAO.filter("id", id).first
+                ?: return ResponseDTO(error = "Invalid shop id")
+        shop.isActive = true
+        DAOManager.factory.shopDAO.push(shop)
+        return ResponseDTO(data = shop)
     }
 }

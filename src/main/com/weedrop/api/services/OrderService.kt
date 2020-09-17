@@ -9,6 +9,7 @@ import com.weedrop.api.database.DAOManager
 class OrderService {
     fun createOrder(orderCreationDTO: OrderCreationDTO) : ResponseDTO {
         val order = Order(orderCreationDTO)
+        order.status = "PENDING"
         DAOManager.factory.orderDAO.push(order)
         return ResponseDTO(data = order)
     }
@@ -24,15 +25,22 @@ class OrderService {
         return ResponseDTO(order)
     }
 
+    fun getPendingOrders() : ResponseDTO {
+        val orders = DAOManager.factory.orderDAO.filter("status", "PENDING").all
+        return ResponseDTO(data = orders)
+    }
+
     fun validateOrder(id: String) : ResponseDTO {
         val order = DAOManager.factory.orderDAO.filter("id", id).first
                 ?: return ResponseDTO(error = "Invalid id")
+        order.status = "VALIDATED"
         return ResponseDTO(order)
     }
 
     fun declineOrder(id: String) : ResponseDTO {
         val order = DAOManager.factory.orderDAO.filter("id", id).first
                 ?: return ResponseDTO(error = "Invalid id")
+        order.status = "DENIED"
         return ResponseDTO()
     }
 }

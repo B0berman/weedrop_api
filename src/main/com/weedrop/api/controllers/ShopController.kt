@@ -48,4 +48,13 @@ class ShopController {
         val response = shopService.getUserShop(sender)
         return response.buildResponse()
     }
+
+
+    @POST
+    @Path("/activate/{id}")
+    @Authenticated(["ADMIN"])
+    fun activateShop(@PathParam("id") id: String): Response {
+        val response = shopService.activateShop(id)
+        return response.buildResponse()
+    }
 }

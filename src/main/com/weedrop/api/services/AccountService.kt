@@ -24,11 +24,11 @@ class AccountService {
             userParams["email"] = user.email
             userParams["displayName"] = user.firstName + " " + user.lastName
             FirebaseDatabase.getInstance().getReference("users").child(user.id).setValueAsync(userParams)
+            DAOManager.factory.userDAO.push(user)
         }catch (  e: FirebaseAuthException){
             e.printStackTrace()
-            return ResponseDTO(error = e)
+            return ResponseDTO(error = "Couldn't create user. Please verify informations")
         }
-        DAOManager.factory.userDAO.push(user)
         return ResponseDTO(data = user)
     }
 

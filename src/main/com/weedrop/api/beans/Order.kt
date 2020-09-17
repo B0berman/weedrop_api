@@ -9,10 +9,10 @@ import org.mongodb.morphia.annotations.Reference
 @Entity(noClassnameStored = true, value = "orders")
 data class Order(@Id val id : String = ObjectId.get().toString(),
                  @Reference val user: User = User(),
-                 val status: String = "",
-                 val type: String = "",
-                 val products: List<Product> = emptyList(),
-                 val destination: Location = Location()) {
+                 var status: String = "",
+                 var type: String = "",
+                 var products: List<Product> = emptyList(),
+                 var destination: Location = Location()) {
     constructor(orderCreationDTO: OrderCreationDTO) : this(status = "PAYMENT_PENDING",
             type = "",
             products = orderCreationDTO.products)

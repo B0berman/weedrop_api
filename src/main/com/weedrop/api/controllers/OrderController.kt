@@ -41,6 +41,14 @@ class OrderController {
     }
 
     @GET
+    @Path("/pending")
+    @ApiOperation(value = "Get all orders.", response = ResponseDTO::class)
+    fun getPendingOrders() : Response {
+        val response = orderService.getPendingOrders()
+        return response.buildResponse()
+    }
+
+    @GET
     @Path("/{id}")
     @ApiOperation(value = "get an order by id.", response = ResponseDTO::class)
     fun getOrderById(@PathParam("id") id: String): Response {

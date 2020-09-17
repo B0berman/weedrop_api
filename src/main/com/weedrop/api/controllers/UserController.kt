@@ -1,7 +1,9 @@
 package com.weedrop.api.controllers
 
 import com.weedrop.api.annotations.Authenticated
+import com.weedrop.api.beans.User
 import com.weedrop.api.beans.dto.ResponseDTO
+import com.weedrop.api.database.DAOManager
 import com.weedrop.api.services.UserService
 import io.swagger.annotations.Api
 import javax.servlet.http.HttpServletRequest
@@ -26,7 +28,10 @@ class UserController {
     @Path("/current")
     @Authenticated
     fun getCurrentUser() : Response {
-        val user = servletRequest!!.getAttribute("user")
+        val user = servletRequest!!.getAttribute("user") as User
+        val shop = DAOManager.factory.shopDAO.filter("admin", user).first
+        if (shop != null)
+            user.hasShop = true
         return ResponseDTO(data = user).buildResponse()
     }
 
