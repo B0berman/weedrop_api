@@ -6,6 +6,7 @@ import com.weedrop.api.beans.dto.ResponseDTO
 import com.weedrop.api.beans.dto.ShopCreationDTO
 import com.weedrop.api.beans.dto.ShopDTO
 import com.weedrop.api.database.DAOManager
+import com.weedrop.api.helpers.sendEmail
 
 class ShopService {
     fun getShops() : ResponseDTO {
@@ -35,6 +36,7 @@ class ShopService {
         val shop = DAOManager.factory.shopDAO.filter("id", id).first
                 ?: return ResponseDTO(error = "Invalid shop id")
         shop.isActive = true
+        if (!sendEmail(shop.admin.email, "SHOP ACTIVATION", "Your shop has been activated by the Weedrop services.\n\nThank you !", null, this.javaClass))
         DAOManager.factory.shopDAO.push(shop)
         return ResponseDTO(data = shop)
     }

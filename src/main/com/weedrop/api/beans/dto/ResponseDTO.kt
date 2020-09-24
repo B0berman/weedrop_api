@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import javax.ws.rs.core.Response
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class ResponseDTO(var error: Any? = null, var data: Any? = null, @JsonIgnore var status: Int = 200, @JsonIgnore var filename: String? = null) {
+data class ResponseDTO(var error: Any? = null, var data: Any? = null, @JsonIgnore var status: Int = 200, @JsonIgnore var filename: String? = null, var codeError: String? = null) {
 
     fun buildResponse() : Response = if (error == null)
         Response.ok(this).build()

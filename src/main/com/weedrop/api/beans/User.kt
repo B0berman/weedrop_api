@@ -13,9 +13,9 @@ data class User(@Id val id : String = ObjectId.get().toString(),
                 var email: String = "",
                 var firstName: String = "",
                 var lastName: String = "",
-                var isAdmin: Boolean? = null,
+                val isAdmin: Boolean? = null,
                 var hasShop: Boolean? = null,
-                @JsonIgnore val validated: Boolean = true) {
+                @JsonIgnore var validated: Boolean = false) {
 
     constructor(signupDTO: SignupDTO) : this(email = signupDTO.email,
             firstName = signupDTO.firstName,

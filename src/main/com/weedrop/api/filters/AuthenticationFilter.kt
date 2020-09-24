@@ -45,10 +45,16 @@ class AuthenticationFilter : ContainerRequestFilter {
                 try {
                     val firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token, true)
                     val user: User? = DAOManager.factory.userDAO.filter("email", firebaseToken.email).first
-                    if (user == null)
+                    user?.let {
+                        if (rolesAllowed.contains("ADMIN") && (user.isAdmin == null || !(user.isAdmin))) {
+                            requestContext.abortWith(ResponseDTO(error = "User cannot access this endpoint", status = 401).buildResponse())
+                        }
+                        println(user)
+                        requestContext.setProperty("user", user!!)
+                    } ?: run {
                         requestContext.abortWith(ResponseDTO(error = "Invalid token", status = 401).buildResponse())
-                    println(user)
-                    requestContext.setProperty("user", user!!)
+                    }
+
                 } catch (e: FirebaseAuthException) {
                     e.printStackTrace()
                     requestContext.abortWith(ResponseDTO(error = "Invalid token", status = 401).buildResponse())
